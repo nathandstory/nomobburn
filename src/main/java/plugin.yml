@@ -1,0 +1,12 @@
+main: me.doopaderp.nomobburn.nomobburn
+name: nomobburn
+version: 1.0
+author: doopaderp
+
+commands:
+  toggleburn:
+
+permissions:
+  toggleburn.use:
+    description: Allows the user to toggle mob burning.
+    default: op
