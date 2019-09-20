@@ -22,7 +22,7 @@ public class nomobburn extends JavaPlugin implements Listener{
 
     //Handle any combustion event(fire charge, daylight, fire aspect sword)
     @EventHandler
-    public void onPlace(EntityCombustEvent e)
+    public void onCombust(EntityCombustEvent e)
     {
         //filter out fire caused by blocks and other entities
         if (!(e instanceof org.bukkit.event.entity.EntityCombustByBlockEvent || e instanceof org.bukkit.event.entity.EntityCombustByEntityEvent)) {
