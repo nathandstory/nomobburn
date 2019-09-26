@@ -12,7 +12,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class nomobburn extends JavaPlugin implements Listener{
 
-    Boolean toggleBurn = true;
+    private Boolean cancelBurn = true;
 
     @Override
     public void onEnable() {
@@ -24,14 +24,15 @@ public class nomobburn extends JavaPlugin implements Listener{
     @EventHandler
     public void onCombust(EntityCombustEvent e)
     {
+        //check if we need to check at all
+        if (cancelBurn == false) return;
         //filter out fire caused by blocks and other entities
-        if (!(e instanceof org.bukkit.event.entity.EntityCombustByBlockEvent || e instanceof org.bukkit.event.entity.EntityCombustByEntityEvent)) {
-            //make sure the mob is a monster(zombie, skeleton, zombiepigman)
-            if (e.getEntity() instanceof Monster){
-                //cancel the combustion
-                if (toggleBurn) e.setCancelled(true);
-            }
-        }   
+        if (e instanceof org.bukkit.event.entity.EntityCombustByBlockEvent || e instanceof org.bukkit.event.entity.EntityCombustByEntityEvent) return;
+        //make sure the mob is a monster(zombie, skeleton, zombiepigman)
+        if (!(e.getEntity() instanceof Monster)) return;
+        //cancel the combustion
+        e.setCancelled(true);
+        return;
     }
 
     //listen for commands
@@ -41,8 +42,10 @@ public class nomobburn extends JavaPlugin implements Listener{
             //if the command user has permissions to use it
             if (sender.hasPermission("toggleburn.use")) {
                //if burning is on, toggle it off and visa versa
-               if (toggleBurn) toggleBurn = false;
-               else toggleBurn = true;
+               cancelBurn = !cancelBurn;
+               String enabledText = cancelBurn ? "§cdisabled" : "§aenabled";
+               sender.sendMessage(ChatColor.GOLD + "Mob burning is now " + enabledText);
+               enabledText = null;
                return true;
             }
             //send the user a message saying they cant use the command if they dont have permissions
